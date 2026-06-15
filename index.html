@@ -1,0 +1,663 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>15 Months of Us 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Dancing+Script:wght@500;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --rose: #ff4d82;
+  --rose2: #ff7eb3;
+  --deep: #5c0a2e;
+  --gold: #ffdf85;
+  --blush: #ffe8f0;
+  --cream: #fff5f8;
+  --bg1: #1a000e;
+  --bg2: #38001d;
+  --accent: #ff2a6d;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: radial-gradient(ellipse at 50% 0%, var(--bg2) 0%, var(--bg1) 70%, #000000 100%);
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  color: var(--cream);
+  overflow-x: hidden;
+}
+
+/* ===== CANVAS STARS ===== */
+#starCanvas { position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.6; }
+
+/* ===== FLOATING PHOTOS ===== */
+.floating-photo {
+  position: absolute;
+  width: 45px; /* Between balloon (60px) and flower (~20px) */
+  height: 45px;
+  object-fit: contain; /* Perfect for transparent background photos */
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+  animation: photoRise linear infinite;
+  filter: drop-shadow(0 4px 10px rgba(255, 77, 130, 0.3));
+}
+@keyframes photoRise {
+  0%   { transform: translateY(110vh) rotate(-20deg); opacity: 0; }
+  10%  { opacity: 0.85; }
+  90%  { opacity: 0.85; }
+  100% { transform: translateY(-20vh) rotate(20deg); opacity: 0; }
+}
+
+/* ===== FLOATING BALLOONS ===== */
+.balloon-scene { position: fixed; inset: 0; pointer-events: none; z-index: 2; overflow: hidden; }
+.bal {
+  position: absolute; display: flex; flex-direction: column; align-items: center;
+  animation: balRise linear infinite; bottom: -220px;
+  pointer-events: auto; cursor: pointer; transition: transform 0.2s;
+}
+.bal:hover { transform: scale(1.1) !important; }
+@keyframes balRise {
+  0%   { transform: translateY(0) translateX(0px) rotate(0deg); opacity: 0; }
+  5%   { opacity: 1; }
+  50%  { transform: translateY(-60vh) translateX(var(--sx)) rotate(var(--sr)); }
+  95%  { opacity: 0.8; }
+  100% { transform: translateY(-120vh) translateX(calc(var(--sx)*2)) rotate(calc(var(--sr)*2)); opacity: 0; }
+}
+
+.bal-body {
+  width: 60px; height: 75px;
+  border-radius: 50% 50% 50% 50% / 46% 46% 54% 54%;
+  position: relative;
+  box-shadow: inset -10px -10px 20px rgba(0,0,0,0.2), inset 6px 6px 14px rgba(255,255,255,0.4), 0 0 15px rgba(255,255,255,0.2);
+}
+.bal-body::after {
+  content: ''; position: absolute; top: 14%; left: 20%;
+  width: 25%; height: 20%; background: rgba(255,255,255,0.5);
+  border-radius: 50%; transform: rotate(-30deg);
+}
+.bal-knot {
+  width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent;
+  border-top: 10px solid var(--kc,#e8416e); margin-top: -2px;
+}
+.bal-string { width: 1px; height: 120px; background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent); }
+
+/* ===== HEART PARTICLES ===== */
+#particles { position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
+.hf { position: absolute; animation: hfloat linear infinite; opacity: 0; user-select: none; }
+@keyframes hfloat {
+  0%   { transform: translateY(105vh) rotate(0deg) scale(0.8); opacity: 0; }
+  10%  { opacity: 0.7; }
+  90%  { opacity: 0.4; }
+  100% { transform: translateY(-10vh) rotate(720deg) scale(1.2); opacity: 0; }
+}
+
+/* ===== HERO ===== */
+.hero {
+  position: relative; z-index: 5; min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; padding: 4rem 1.5rem 2rem; text-align: center;
+}
+.hero-inner {
+  max-width: 800px; width: 100%;
+  background: linear-gradient(145deg, rgba(255, 77, 130, 0.15) 0%, rgba(92, 10, 46, 0.4) 100%);
+  border: 1px solid rgba(255, 223, 133, 0.3);
+  border-radius: 40px;
+  padding: clamp(2.5rem, 6vw, 5rem) clamp(2rem, 7vw, 5rem);
+  backdrop-filter: blur(20px) saturate(1.5);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.05), 0 0 60px rgba(255, 42, 109, 0.25), 0 30px 80px rgba(0,0,0,0.6);
+  animation: heroFloat 6s ease-in-out infinite;
+  transition: transform 0.3s ease;
+}
+.hero-inner:hover { transform: scale(1.02); }
+
+@keyframes heroFloat {
+  0%, 100% { transform: translateY(0px); }
+  50%      { transform: translateY(-15px); }
+}
+
+.badge {
+  display: inline-flex; align-items: center; gap: .6rem;
+  background: linear-gradient(135deg, var(--rose), #9b144d);
+  color: #fff; font-family: 'Dancing Script', cursive; font-size: clamp(1rem, 2.5vw, 1.35rem);
+  padding: .5rem 1.8rem; border-radius: 100px; margin-bottom: 2rem;
+  box-shadow: 0 0 25px rgba(255, 77, 130, 0.6), 0 4px 15px rgba(0,0,0,0.3);
+  animation: pulseBadge 2s infinite alternate;
+}
+@keyframes pulseBadge {
+  0% { box-shadow: 0 0 15px rgba(255, 77, 130, 0.4); transform: scale(1); }
+  100% { box-shadow: 0 0 30px rgba(255, 77, 130, 0.8); transform: scale(1.05); }
+}
+
+.hero-title {
+  font-family: 'Cormorant Garamond', serif; font-weight: 400; font-style: italic;
+  font-size: clamp(3.5rem, 10vw, 7.5rem); line-height: 1;
+  background: linear-gradient(135deg, #ffffff 0%, #ffcce0 40%, var(--gold) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 1rem; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
+}
+
+.hero-sub {
+  font-family: 'Dancing Script', cursive; font-size: clamp(1.1rem, 3vw, 1.8rem);
+  color: var(--blush); opacity: 0.95; margin-bottom: 2.5rem; line-height: 1.6;
+}
+
+/* stats row */
+.stats { display: flex; justify-content: center; gap: clamp(.8rem, 3vw, 2rem); flex-wrap: wrap; margin: 2rem 0 2.5rem; }
+.stat {
+  background: linear-gradient(145deg, rgba(255, 77, 130, 0.2), rgba(92, 10, 46, 0.6));
+  border: 1px solid rgba(255, 223, 133, 0.3); border-radius: 20px;
+  padding: 1.2rem 1.6rem; text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 2px 5px rgba(255,255,255,0.1);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer; min-width: 100px;
+}
+.stat:hover {
+  transform: translateY(-10px) scale(1.1);
+  box-shadow: 0 20px 40px rgba(255, 42, 109, 0.4), 0 10px 20px rgba(0,0,0,0.5);
+  border-color: var(--gold);
+}
+.stat-n {
+  font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5.5vw, 3.2rem); font-weight: 600;
+  background: linear-gradient(135deg, var(--gold), #ffffff);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1;
+}
+.stat-l {
+  font-size: .75rem; text-transform: uppercase; letter-spacing: .2em;
+  color: var(--blush); opacity: .8; margin-top: .4rem; font-weight: 600;
+}
+
+.divider { display: flex; align-items: center; gap: 1rem; margin: 2rem 0; }
+.divider-line { flex: 1; height: 2px; background: linear-gradient(to right, transparent, rgba(255, 223, 133, 0.6), transparent); }
+.divider-icon { font-size: 1.8rem; }
+
+.hero-tagline {
+  font-family: 'Dancing Script', cursive; font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  color: var(--blush); opacity: .9; line-height: 1.7; text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* ===== ROSES STRIP ===== */
+.roses-strip {
+  position: relative; z-index: 5; text-align: center; font-size: clamp(1.2rem, 3vw, 2rem);
+  padding: 3rem 0 2rem; animation: rosePulse 3s ease-in-out infinite; letter-spacing: .2em;
+}
+@keyframes rosePulse {
+  0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 77, 130, .6)) scale(1); }
+  50%      { filter: drop-shadow(0 0 25px rgba(255, 77, 130, 1)) scale(1.05); }
+}
+
+/* ===== LETTER SECTION ===== */
+.letter-wrap { position: relative; z-index: 5; max-width: 900px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem) 2rem; }
+
+/* Interactive Reveal Button */
+.open-letter-btn {
+  display: block; margin: 0 auto 3rem; background: linear-gradient(135deg, var(--rose), #ff1a53);
+  color: #fff; font-family: 'Dancing Script', cursive; font-size: 1.6rem;
+  padding: 1rem 2.5rem; border: 2px solid var(--gold); border-radius: 50px;
+  cursor: pointer; box-shadow: 0 10px 30px rgba(255, 77, 130, 0.5);
+  transition: all 0.3s ease; animation: bounceFloat 2s infinite ease-in-out;
+}
+.open-letter-btn:hover { transform: scale(1.1); box-shadow: 0 15px 40px rgba(255, 77, 130, 0.8); }
+@keyframes bounceFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.letter-card {
+  background: linear-gradient(160deg, rgba(255, 245, 248, 0.08) 0%, rgba(92, 10, 46, 0.25) 100%);
+  border: 1px solid rgba(255, 223, 133, 0.3); border-radius: 30px;
+  padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 4rem);
+  backdrop-filter: blur(25px);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.05), 0 30px 80px rgba(0,0,0,0.6), inset 0 2px 20px rgba(255,255,255,0.08);
+  position: relative; overflow: hidden;
+  opacity: 0; transform: translateY(48px) scale(0.9);
+  transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: none;
+}
+.letter-card.vis { opacity: 1; transform: translateY(0) scale(1); display: block; animation: glowBorder 4s infinite alternate; }
+
+@keyframes glowBorder {
+  0% { box-shadow: 0 0 20px rgba(255, 77, 130, 0.2), inset 0 0 10px rgba(255,255,255,0.1); }
+  100% { box-shadow: 0 0 50px rgba(255, 77, 130, 0.5), inset 0 0 20px rgba(255,255,255,0.2); }
+}
+
+.letter-card::before {
+  content: '♡'; position: absolute; top: -50px; right: -40px;
+  font-size: 280px; color: rgba(255, 77, 130, 0.05); pointer-events: none; line-height: 1; transform: rotate(15deg);
+}
+.letter-card::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 6px;
+  background: linear-gradient(to right, transparent, var(--rose), var(--gold), var(--rose), transparent);
+  border-radius: 0 0 30px 30px;
+}
+
+.letter-from { display: flex; align-items: center; gap: 1rem; margin-bottom: 2.2rem; }
+.letter-from-icon { font-size: 2.5rem; animation: floatIcon 3s infinite ease-in-out; }
+@keyframes floatIcon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px) rotate(-10deg); } }
+
+.letter-from-text { font-family: 'Dancing Script', cursive; font-size: clamp(1.6rem, 4vw, 2.4rem); color: #fff; text-shadow: 0 2px 10px rgba(255, 77, 130, 0.6); line-height: 1.2; }
+.letter-from-sub { font-size: .8rem; text-transform: uppercase; letter-spacing: .25em; color: var(--rose2); margin-top: .3rem; font-weight: 600; }
+.letter-hr { height: 2px; background: linear-gradient(to right, transparent, rgba(255, 223, 133, .5), transparent); margin: 0 0 2.5rem; }
+
+/* paragraphs */
+.letter-body p {
+  font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: clamp(1.15rem, 2.5vw, 1.35rem);
+  line-height: 2.1; color: rgba(255, 245, 248, 0.95); margin-bottom: 1.8rem; word-break: break-word; text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}
+.letter-body p:last-child { margin-bottom: 0; }
+
+.letter-sign { margin-top: 3rem; text-align: right; font-family: 'Dancing Script', cursive; font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--gold); text-shadow: 0 2px 8px rgba(255, 223, 133, 0.4); line-height: 1.6; }
+.letter-sign-hearts { font-size: 2rem; line-height: 2; text-align: center; margin-top: 2rem; filter: drop-shadow(0 0 10px rgba(255, 77, 130, 0.8)); }
+
+/* ===== LIVE COUNTER ===== */
+.live-counter-section {
+  position: relative; z-index: 5; text-align: center; padding: 2rem 1rem;
+}
+.counter-box {
+  background: linear-gradient(145deg, rgba(255, 77, 130, 0.1), rgba(92, 10, 46, 0.3));
+  border: 1px solid rgba(255, 223, 133, 0.2); border-radius: 25px;
+  padding: 2rem; max-width: 600px; margin: 0 auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 2px 5px rgba(255,255,255,0.05);
+}
+.counter-title { font-family: 'Dancing Script', cursive; font-size: clamp(1.4rem, 3vw, 1.8rem); color: var(--gold); margin-bottom: 0.5rem; }
+.counter-number {
+  font-family: 'Inter', sans-serif; font-weight: 300; font-size: clamp(2.5rem, 6vw, 4rem);
+  color: #fff; text-shadow: 0 0 15px rgba(255, 77, 130, 0.6);
+  font-variant-numeric: tabular-nums; letter-spacing: 2px; line-height: 1.1;
+}
+.counter-label { font-size: clamp(0.7rem, 2vw, 0.9rem); color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.2em; margin-top: 0.8rem; }
+
+/* ===== FOOTER ===== */
+footer { position: relative; z-index: 5; text-align: center; padding: 2rem 1rem 4rem; font-family: 'Dancing Script', cursive; }
+footer .ft { font-size: clamp(1.6rem, 4vw, 2.5rem); color: var(--rose2); text-shadow: 0 2px 10px rgba(255, 77, 130, 0.5); }
+footer .ft-sub { font-size: clamp(.9rem, 2vw, 1.1rem); color: rgba(255,255,255,0.6); margin-top: .8rem; font-family: 'Inter', sans-serif; font-weight: 400; letter-spacing: .15em; }
+
+/* ===== CLICK SPARKLES ===== */
+.spark { position: fixed; pointer-events: none; z-index: 9999; animation: sparkAnim 1s ease-out forwards; text-shadow: 0 0 10px #fff; }
+@keyframes sparkAnim {
+  0%   { transform: scale(0) rotate(0deg); opacity: 1; }
+  50%  { transform: scale(1.8) rotate(180deg); opacity: 1; }
+  100% { transform: scale(0) rotate(360deg) translateY(-50px); opacity: 0; }
+}
+
+/* ===== SCROLL REVEAL ===== */
+.reveal { opacity: 0; transform: translateY(50px); transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.reveal.vis { opacity: 1; transform: translateY(0); }
+
+@media(max-width:520px) {
+  .hero-inner { padding: 2.5rem 1.2rem; }
+  .letter-card { padding: 2.2rem 1.2rem; }
+  .open-letter-btn { font-size: 1.3rem; padding: 0.8rem 2rem; }
+  .counter-box { padding: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="starCanvas"></canvas>
+<div id="particles"></div>
+<div id="photoScene" class="balloon-scene" style="z-index: 1;"></div> 
+<div class="balloon-scene" id="balloonScene"></div>
+
+<section class="hero">
+  <div class="hero-inner reveal vis">
+    <div class="badge">✨ 15 Months of Pure Love ✨</div>
+
+    <h1 class="hero-title">Forever<br>&amp; Always</h1>
+
+    <p class="hero-sub">
+      My Bubble Gum &nbsp;·&nbsp; My Tin Tin &nbsp;·&nbsp; My Cookie 🍪<br>
+      Meri Jaan &nbsp;·&nbsp; Mera Bachaaaa 🥺
+    </p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-n" data-target="15">0</div>
+        <div class="stat-l">Months</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n" data-target="456">0</div>
+        <div class="stat-l">Days</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">∞</div>
+        <div class="stat-l">Love</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n" data-target="1">0</div>
+        <div class="stat-l">Miracle</div>
+      </div>
+    </div>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-icon">🌹</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <p class="hero-tagline">
+      From an anonymous chat to the purest love story ever written 💌<br>
+      ♾️
+    </p>
+  </div>
+</section>
+
+<div class="roses-strip reveal">
+  🌹🌷💕🌹🌷💕🌹🌷💕🌹🌷💕🌹🌷💕🌹
+</div>
+
+<section class="letter-wrap">
+  
+  <button class="open-letter-btn reveal" id="openBtn">Tap to open  letter 🥺💌</button>
+
+  <div class="letter-card" id="letterCard">
+    <div class="letter-from">
+      <span class="letter-from-icon">💌</span>
+      <div>
+        <div class="letter-from-text">i love you so much jiggu…</div>
+        <div class="letter-from-sub"> </div>
+      </div>
+    </div>
+
+    <div class="letter-hr"></div>
+
+    <div class="letter-body">
+      <p>Bubby 🥺🥺🥺🥺 I'm really really really really sorry. Love muje late nhi Krna tha itna pta nhi kyu jab kuch banana hota h pta nhi tab hi kyu problem hoti h acha nhi lgta m b apki jagh hounga to muje b aisa lgega ki I'm taking you for granted or something but love jaise aap keh rhe the ki m ab irritate hone laga hu aur mera mann nhi krta baby koi b hoga meri harkat dekh ke aisa hi lgega ki yes but bubby I truly truly love you. Baby idk mere temper me kya ho rha h mujhe change hota jaa rha h bina baat ke gusaa. Love 🥺🥺🥺🥺 Mujhe maaf Krna.</p>
+
+      <p>Ye 15 Months meri zindagi ke sabse brightest sabse happiest Months the aur aage waale saare saal and months sabse brightest sabse happiest and loved honge aapke saath — aap ko mat pta h mere liye ho kya aap. Aapne khud ko itna underestimate krke rkha h muje tareef b m krta hu to aap bolte ho nhi h aisa etc etc but love kabi khud se mere jgh khud ko rakh ke dekhna aapko pata chalega kitni Zaroori ho kitne Zyada pyaare ho aaap — haan muje express theek se karna nhi aaya h abi tak but trust me baby mujhse nhi rahaa jaata aapke binaa. M sab kuch theek krne ki koshish hamesha krta hu, roz krta hu love. M sach me apko prove krunga ek din aapki Value kya h actually me mere liye.</p>
+
+      <p>Jaaan aaj b aise lgta h ki parso mile the bas 2 din pehle aur kabi aise lagta h ki hamari 1000000 baaaar shaadi ho chuki hai aur ham kabse saath hi h. Love har ek din yaad aati h aapki bohot mann krta h ki bas baat hoti rhe — but baby as a husband ab mera farz banta h ki m aapka focus sab padhai and art ke taraf shift kru. M to yhaa hi rhunga, ulta mujhe hi Khushi hogi ki meri jaan ne, mere bachee ne kar dikhaya. Jaan muje bas kisi tarah aapko bohot healthy and fit &amp; fine dekhna h and bohot zyada happy dekhna h — muje aapko successful dekhna h aapko.</p>
+
+      <p>Love, jhaa ham sirf ek Anonymous bot pe mile — jhaa bas log kuch der ke liye baat krke move on kr jaate h ya fir kisi na kisi matlab ke liye hote h — whaa ham itna zyada gehra relationship bnaa paye. Ye apne aap me ek miracle h and all thanks to you baby. Ho skta tha ki aap agle din skip kr dete aur fir hamara safar kabi itna aage aahi nhi pata — but aap rhe, aapne mujhe suna, aapne mujhe heal kiya, mujhe vo sukoon diya jo hamesha se kahi gayab tha zindgi me — aapke aane se Vo mila. Abi b baatein yaad aati h. M kitna aapko pagal krke rkhta tha 🥺🥺🥺.</p>
+
+      <p>Love chaahe jitni b ajeeb situation ho jaye ye yaad rkhna — m pyar krta tha, hu, aur rhunga. Love m khud ko sudharunga, I Promise. And baby muje badi tension rehti h 😔 aapki — love m positive sochne ki koshish krta hu but bohot saari chize h jo muje bother kr rhi h is waqt love. But m Hope krunga sab theek hi hoga — Ameen summa Ameen summa Ameen ya Rabbul Alamin.</p>
+
+      <p>Meri happiness dekh ke pata chal jata h sabko — how happy I am with you. Aapka pyaar, aapki care, apki loyalty, apka mere saath rehna har situation me — mere liye ek proud h. Muje bohot gahmand h is baat pe. Log ya cousins jab apne partners ka rona rote h — to muje andr se hi khushi hoti h ki Mera to Aisa kuch b nhi h 😋 — jaaha log aaj kal situationship, Simp, pta ni kya kya Chizo me pade hai — whaa ham bilkul pure loyal and Pyara relationship bnaake rakhe h. Allah Humma Barik, Allah Humma Barik. 🤲</p>
+
+      <p>Thank you So Much for everything my bubble gum, my Tin tin 💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋💋 aap bohot saari kissy deserve krte ho — 10,000 times zyada, bohot zyada 💋💋💋💋 mera cookieee, mera artist ki language, mere bacheee garam krhwa mera 🥺🥺🥺 apna dhyan rkha kro mera baby, mera bachaaaa.</p>
+
+      <p>Inshallah aage ke saare saal aur din hamare bade ache saath saath saath saath guzre. Mere pass words khatam ho jaate h — sochta hu kabi ki 3 baje raat me likhu because fir mujhe infinity thoughts aate h. 😔😔😔🥺 Ye didi nhi aayi hoti sab kuch bada smoothly hota.</p>
+
+      <p>Bebbaaa meri jaaan — Aap aise mat bola kro ki "mujhe tolerate krlo kuch time" — aise nhi bolte baby. Aap to meri biwi ho, preshan to m zyada krta hu aapko, aur husband wife me ye chalta h, theek h, chill rha kro 💋💋💋 — appka hubby kabi nhi jayega apko chorke.</p>
+
+      <p>I Love you forever and ever and ever and ever and ever and ever and ever and ever and infinity ♾️</p>
+
+      <p>Nhi love, aise nhi h ki aap muje jo bolte ho ki problem hui ya fir pain h ya kuch — baby m bas gusaa isiliye ho jata hu kyuki mujhe bebas feel hota h ki mere bas me itna h nhi ho paa rha. Mera mann hota h usi waqt m sahi kr du ekdam se sab kuch — but whi baat h, fir mera dimag ghoom hi jata h. Muje fir sab pe gusaa aane lgta h — aap par, khud par, mumma baba par, sab par. Love. Bas mere gusse ka apko agr krta hu to reason ye hota h ki — sun liya kro, maan liya kro, dhyaan rkha kro carefully, sab kiya kro. Time pe dwai etc..</p>
+
+      <p>Mera baby — I Love You Too Much 💋❣️♾️❤️💗💘💝💞💓💖💕</p>
+    </div>
+
+    <div class="letter-sign">
+      —  Star.<br>
+      loves you forever and ever and ever 
+    </div>
+
+    <div class="letter-sign-hearts">
+      💕🌹💋❤️🌹💕💋❤️🌹💕
+    </div>
+  </div>
+</section>
+
+<section class="live-counter-section reveal">
+  <div class="counter-box">
+    <div class="counter-title">Our Infinity Count</div>
+    <div class="counter-number" id="liveSecs">Loading...</div>
+    <div class="counter-label">Seconds together since March 14, 2025</div>
+  </div>
+</section>
+
+<footer class="reveal">
+  <div class="ft">Happy 15 Months, Meri Jaan 🥺💍</div>
+  <div class="ft-sub">Your Hubby &nbsp;·&nbsp; Always &amp; Forever &nbsp;·&nbsp; ♾️</div>
+</footer>
+
+<script>
+/* ─── LIVE SECONDS COUNTER ─── */
+(function(){
+  // Setting the start date: March 14, 2025 at midnight
+  const startDate = new Date('March 14, 2025 00:00:00').getTime();
+  const counterEl = document.getElementById('liveSecs');
+  
+  setInterval(() => {
+    const now = new Date().getTime();
+    const diffInSeconds = Math.floor((now - startDate) / 1000);
+    
+    if (diffInSeconds > 0) {
+      counterEl.innerText = diffInSeconds.toLocaleString(); // Adds commas
+    } else {
+      counterEl.innerText = "0"; // In case date is in the future relative to viewer
+    }
+  }, 1000);
+})();
+
+/* ─── FLOATING PHOTOS (PLACEHOLDERS) ─── */
+(function(){
+  const photoScene = document.getElementById('photoScene');
+  
+  // ---> CHANGE THESE URLS TO YOUR GITHUB LINKS <---
+  const photoSources = [
+    'photo1.png', // Replace with your Image 1 URL
+    'photo2.png', // Replace with your Image 2 URL
+    'photo3.png', // Replace with your Image 3 URL
+    'photo4.png', // Replace with your Image 4 URL
+    'photo5.png'  // Replace with your Image 5 URL
+  ];
+
+  function spawnPhoto(src, delay) {
+    const img = document.createElement('img');
+    img.src = src;
+    img.className = 'floating-photo';
+    
+    // Random position and float duration
+    const dur = 18 + Math.random() * 12; // Slow elegant float
+    const left = 5 + Math.random() * 90; // Spread across screen width
+    
+    img.style.cssText = `
+      left: ${left}vw;
+      animation-duration: ${dur}s;
+      animation-delay: ${delay}s;
+    `;
+    
+    img.alt = '';
+    
+    // Fallback styling so it still looks okay before you add links
+    img.onerror = function() {
+      this.style.background = 'rgba(255,255,255,0.15)';
+      this.style.backdropFilter = 'blur(5px)';
+      this.style.borderRadius = '8px';
+      this.removeAttribute('src');
+    };
+
+    photoScene.appendChild(img);
+
+    // Remove from DOM when done floating, then spawn a new one to keep loop going
+    setTimeout(() => {
+      img.remove();
+      spawnPhoto(src, 0); // Respawn immediately after it finishes
+    }, (dur + delay) * 1000);
+  }
+
+  // Initial spawn with staggered delays so they don't all appear at once
+  photoSources.forEach((src, index) => {
+    spawnPhoto(src, index * 3);     // First set
+    spawnPhoto(src, index * 3 + 10); // Second set to populate screen more
+  });
+})();
+
+/* ─── INTERACTIVE ENVELOPE OPEN ─── */
+const openBtn = document.getElementById('openBtn');
+const letterCard = document.getElementById('letterCard');
+openBtn.addEventListener('click', () => {
+  openBtn.style.transform = 'scale(0)';
+  setTimeout(() => {
+    openBtn.style.display = 'none';
+    letterCard.classList.add('vis');
+    letterCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    createSparkles(window.innerWidth/2, window.innerHeight/2, 15);
+  }, 300);
+});
+
+/* ─── ANIMATED COUNTERS ─── */
+const counters = document.querySelectorAll('.stat-n[data-target]');
+let hasAnimated = false;
+const observer = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting && !hasAnimated) {
+    hasAnimated = true;
+    counters.forEach(counter => {
+      const updateCount = () => {
+        const target = +counter.getAttribute('data-target');
+        const count = +counter.innerText;
+        const speed = 40; 
+        const inc = target / speed;
+        if (count < target) {
+          counter.innerText = Math.ceil(count + inc);
+          setTimeout(updateCount, 40);
+        } else {
+          counter.innerText = target;
+        }
+      };
+      updateCount();
+    });
+  }
+}, { threshold: 0.5 });
+observer.observe(document.querySelector('.stats'));
+
+/* ─── STARS ─── */
+(function(){
+  const c = document.getElementById('starCanvas');
+  const ctx = c.getContext('2d');
+  let stars = [];
+  function resize(){
+    c.width = innerWidth; c.height = innerHeight;
+    stars = [];
+    for(let i=0; i<150; i++){
+      stars.push({
+        x: Math.random()*c.width, y: Math.random()*c.height,
+        r: Math.random()*1.5+0.5, a: Math.random(), sp: Math.random()*.01+.005
+      });
+    }
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    stars.forEach(s => {
+      s.a += s.sp;
+      const alpha = .4 + .6*Math.abs(Math.sin(s.a));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(255, 210, 235, ${alpha})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ─── HEART PARTICLES ─── */
+(function(){
+  const wrap = document.getElementById('particles');
+  const icons = ['❤️','💕','💗','💓','🌹','✨','🌸','💖'];
+  for(let i=0; i<45; i++){
+    const el = document.createElement('div');
+    el.className = 'hf';
+    el.textContent = icons[Math.floor(Math.random()*icons.length)];
+    el.style.cssText = `
+      left: ${Math.random()*100}vw;
+      font-size: ${12+Math.random()*18}px;
+      animation-duration: ${10+Math.random()*15}s;
+      animation-delay: ${Math.random()*15}s;
+    `;
+    wrap.appendChild(el);
+  }
+})();
+
+/* ─── BALLOONS WITH POP INTERACTION ─── */
+(function(){
+  const scene = document.getElementById('balloonScene');
+  const colors = [
+    {body:'#ff7eb3', knot:'#d63a6f'}, {body:'#ff4d82', knot:'#b02050'},
+    {body:'#ffcce0', knot:'#ff4d82'}, {body:'#ffdf85', knot:'#c09020'},
+    {body:'#c084fc', knot:'#8020cc'}, {body:'#ff9eb5', knot:'#e05070'},
+  ];
+
+  function spawnBalloon(){
+    const col = colors[Math.floor(Math.random()*colors.length)];
+    const dur = 14 + Math.random()*18;
+    const delay = Math.random()*2;
+    const sx = (Math.random()-.5)*150;
+    const sr = (Math.random()-.5)*30;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'bal';
+    wrap.style.cssText = `
+      left: ${5+Math.random()*90}vw;
+      --sx: ${sx}px; --sr: ${sr}deg;
+      animation-duration: ${dur}s; animation-delay: ${delay}s;
+    `;
+
+    const body = document.createElement('div');
+    body.className = 'bal-body';
+    body.style.background = `radial-gradient(circle at 35% 30%, ${col.body}ee, ${col.knot}cc)`;
+    
+    const knot = document.createElement('div');
+    knot.className = 'bal-knot';
+    knot.style.setProperty('--kc', col.knot);
+    knot.style.borderTopColor = col.knot;
+    
+    const string = document.createElement('div');
+    string.className = 'bal-string';
+
+    wrap.appendChild(body); wrap.appendChild(knot); wrap.appendChild(string);
+    scene.appendChild(wrap);
+
+    wrap.addEventListener('mousedown', (e) => {
+      createSparkles(e.clientX, e.clientY, 8);
+      wrap.style.display = 'none'; 
+    });
+
+    setTimeout(() => wrap.remove(), (dur+delay+2)*1000);
+  }
+
+  for(let i=0; i<15; i++){ setTimeout(spawnBalloon, i*900); }
+  setInterval(spawnBalloon, 2200);
+})();
+
+/* ─── SCROLL REVEAL ─── */
+(function(){
+  const els = [...document.querySelectorAll('.reveal')];
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting && !e.target.id.includes('letterCard')) { e.target.classList.add('vis'); }});
+  }, { threshold: .1 });
+  els.forEach(el => { if(el) io.observe(el); });
+})();
+
+/* ─── CLICK SPARKLES ─── */
+function createSparkles(x, y, amount) {
+  const icons = ['💕','✨','🌸','💗','❤️'];
+  for(let i=0; i<amount; i++){
+    const s = document.createElement('span');
+    s.className = 'spark';
+    s.textContent = icons[Math.floor(Math.random()*icons.length)];
+    s.style.cssText = `
+      left: ${x+(Math.random()-.5)*80}px; top: ${y+(Math.random()-.5)*80}px;
+      font-size: ${16+Math.random()*18}px;
+    `;
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 1000);
+  }
+}
+document.addEventListener('click', function(e) {
+  if (e.target.tagName !== 'BUTTON' && !e.target.closest('.bal')) {
+    createSparkles(e.clientX, e.clientY, 5);
+  }
+});
+</script>
+</body>
+</html>
+
+```
+
